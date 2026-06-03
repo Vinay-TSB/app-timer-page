@@ -2,12 +2,8 @@
 // Update the UNIVERSAL_LINK constant with your actual Android app deep link
 
 const CONFIG = {
-    // Replace this with your actual universal link
-    // Examples:
-    // - Custom scheme: "myapp://open"
-    // - HTTPS universal link: "https://yourdomain.com/app"
-    // - Android intent: "intent://example.com#Intent;scheme=https;package=com.example.app;end"
-    UNIVERSAL_LINK: "myapp://open",
+    // TSB App Universal Link - Pending Transaction Screen
+    UNIVERSAL_LINK: "https://nonprod.omni.tsb.co.uk/sca/pendingtransaction",
     
     // Timer duration in seconds
     TIMER_DURATION: 10,
