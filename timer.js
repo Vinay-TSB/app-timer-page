@@ -17,6 +17,7 @@
     const statusSecondsElement = document.getElementById('statusSeconds');
     const manualButtonElement = document.getElementById('manualButton');
     const progressCircle = document.getElementById('progressCircle');
+    const autoRedirectLink = document.getElementById('autoRedirectLink');
 
     // Timer variables
     let timeRemaining = config.TIMER_DURATION;
@@ -105,9 +106,10 @@
                 countdownElement.textContent = '0';
                 updateProgressCircle(0);
                 
-                // Simulate user click on the button to trigger redirect
+                // Simulate user click on hidden link to trigger redirect
                 statusTextElement.textContent = 'Opening app...';
-                manualButtonElement.click();
+                autoRedirectLink.href = config.UNIVERSAL_LINK;
+                autoRedirectLink.click();
             }
         }, 1000);
     }
