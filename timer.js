@@ -110,15 +110,58 @@
                 statusTextElement.textContent = 'Opening app...';
                 manualButtonElement.textContent = 'Opening...';
                 
-                // Programmatically click the button after a tiny delay
+                // Simulate complete touch gesture sequence for Android
                 setTimeout(() => {
-                    // Create and dispatch a real click event
-                    const clickEvent = new MouseEvent('click', {
-                        view: window,
-                        bubbles: true,
-                        cancelable: true
+                    // Get button position for realistic touch coordinates
+                    const rect = manualButtonElement.getBoundingClientRect();
+                    const x = rect.left + rect.width / 2;
+                    const y = rect.top + rect.height / 2;
+                    
+                    // Create touch event properties
+                    const touchObj = new Touch({
+                        identifier: Date.now(),
+                        target: manualButtonElement,
+                        clientX: x,
+                        clientY: y,
+                        radiusX: 2.5,
+                        radiusY: 2.5,
+                        rotationAngle: 0,
+                        force: 1
                     });
-                    manualButtonElement.dispatchEvent(clickEvent);
+                    
+                    // Simulate touchstart
+                    const touchStartEvent = new TouchEvent('touchstart', {
+                        bubbles: true,
+                        cancelable: true,
+                        view: window,
+                        touches: [touchObj],
+                        targetTouches: [touchObj],
+                        changedTouches: [touchObj]
+                    });
+                    manualButtonElement.dispatchEvent(touchStartEvent);
+                    
+                    // Simulate touchend after a brief moment
+                    setTimeout(() => {
+                        const touchEndEvent = new TouchEvent('touchend', {
+                            bubbles: true,
+                            cancelable: true,
+                            view: window,
+                            touches: [],
+                            targetTouches: [],
+                            changedTouches: [touchObj]
+                        });
+                        manualButtonElement.dispatchEvent(touchEndEvent);
+                        
+                        // Follow with click event
+                        const clickEvent = new MouseEvent('click', {
+                            view: window,
+                            bubbles: true,
+                            cancelable: true,
+                            clientX: x,
+                            clientY: y
+                        });
+                        manualButtonElement.dispatchEvent(clickEvent);
+                    }, 50);
                 }, 100);
             }
         }, 1000);
