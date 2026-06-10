@@ -57,50 +57,18 @@
         // Update status
         statusTextElement.textContent = 'Opening app...';
         
-        // Try to open the app
+        // Try to open the app with user interaction
         try {
-            // For Android, we can use different methods
-            if (isAndroid()) {
-                // Method 1: Direct window.location
-                window.location.href = config.UNIVERSAL_LINK;
-                
-                // Method 2: Create invisible iframe (fallback)
-                setTimeout(() => {
-                    const iframe = document.createElement('iframe');
-                    iframe.style.display = 'none';
-                    iframe.src = config.UNIVERSAL_LINK;
-                    document.body.appendChild(iframe);
-                    
-                    // Remove iframe after a short delay
-                    setTimeout(() => {
-                        document.body.removeChild(iframe);
-                    }, 1000);
-                }, 100);
-            } else {
-                // For other platforms, use direct navigation
-                window.location.href = config.UNIVERSAL_LINK;
-            }
+            // Direct navigation - works best with user interaction
+            window.location.href = config.UNIVERSAL_LINK;
             
-            // Show manual button after delay if configured
-            if (config.SHOW_MANUAL_BUTTON) {
-                setTimeout(() => {
-                    manualButtonElement.style.display = 'block';
-                    statusTextElement.textContent = 'App didn\'t open? Try the button below.';
-                }, config.MANUAL_BUTTON_DELAY);
-            }
-            
-            // If fallback URL is provided and app doesn't open, redirect there
-            if (config.FALLBACK_URL) {
-                setTimeout(() => {
-                    if (document.visibilityState === 'visible') {
-                        window.location.href = config.FALLBACK_URL;
-                    }
-                }, 3000);
-            }
+            // Update status after attempt
+            setTimeout(() => {
+                statusTextElement.textContent = 'If the app didn\'t open, please try again.';
+            }, 2000);
         } catch (error) {
             console.error('Error opening app:', error);
-            statusTextElement.textContent = 'Error opening app. Please try manually.';
-            manualButtonElement.style.display = 'block';
+            statusTextElement.textContent = 'Error opening app. Please try again.';
         }
     }
 
@@ -137,8 +105,9 @@
                 countdownElement.textContent = '0';
                 updateProgressCircle(0);
                 
-                // Trigger redirect
-                openApp();
+                // Simulate user click on the button to trigger redirect
+                statusTextElement.textContent = 'Opening app...';
+                manualButtonElement.click();
             }
         }, 1000);
     }
