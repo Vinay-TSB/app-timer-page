@@ -2,8 +2,8 @@
 // Update the UNIVERSAL_LINK constant with your actual Android app deep link
 
 const CONFIG = {
-    // TSB App Universal Link - Pending Transaction Screen
-    UNIVERSAL_LINK: "https://nonprod.omni.tsb.co.uk/sca/pendingtransaction",
+    // TSB App Universal Link - Pay by Bank
+    UNIVERSAL_LINK: "https://nonprod.omni.tsb.co.uk/paybybank",
     
     // Timer duration in seconds
     TIMER_DURATION: 30,
