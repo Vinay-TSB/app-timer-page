@@ -6,7 +6,7 @@ const CONFIG = {
     UNIVERSAL_LINK: "https://nonprod.omni.tsb.co.uk/sca/pendingtransaction",
     
     // Timer duration in seconds
-    TIMER_DURATION: 10,
+    TIMER_DURATION: 30,
     
     // Fallback URL if the app doesn't open (optional)
     FALLBACK_URL: null, // Set to a URL like "https://play.google.com/store/apps/details?id=your.app.id"
