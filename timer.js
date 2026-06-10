@@ -106,12 +106,11 @@
                 countdownElement.textContent = '0';
                 updateProgressCircle(0);
                 
-                // Show button and auto-click it after a tiny delay
+                // Update status and button text
                 statusTextElement.textContent = 'Opening app...';
-                manualButtonElement.style.display = 'block';
                 manualButtonElement.textContent = 'Opening...';
                 
-                // Trigger click with a small delay to ensure button is rendered
+                // Programmatically click the button after a tiny delay
                 setTimeout(() => {
                     // Create and dispatch a real click event
                     const clickEvent = new MouseEvent('click', {
