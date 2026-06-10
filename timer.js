@@ -106,10 +106,21 @@
                 countdownElement.textContent = '0';
                 updateProgressCircle(0);
                 
-                // Simulate user click on hidden link to trigger redirect
+                // Show button and auto-click it after a tiny delay
                 statusTextElement.textContent = 'Opening app...';
-                autoRedirectLink.href = config.UNIVERSAL_LINK;
-                autoRedirectLink.click();
+                manualButtonElement.style.display = 'block';
+                manualButtonElement.textContent = 'Opening...';
+                
+                // Trigger click with a small delay to ensure button is rendered
+                setTimeout(() => {
+                    // Create and dispatch a real click event
+                    const clickEvent = new MouseEvent('click', {
+                        view: window,
+                        bubbles: true,
+                        cancelable: true
+                    });
+                    manualButtonElement.dispatchEvent(clickEvent);
+                }, 100);
             }
         }, 1000);
     }
