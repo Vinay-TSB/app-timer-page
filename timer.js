@@ -106,63 +106,30 @@
                 countdownElement.textContent = '0';
                 updateProgressCircle(0);
                 
-                // Update status and button text
-                statusTextElement.textContent = 'Opening app...';
-                manualButtonElement.textContent = 'Opening...';
+                // Update status
+                statusTextElement.textContent = 'Refreshing page...';
+                manualButtonElement.textContent = 'Refreshing...';
                 
-                // Simulate complete touch gesture sequence for Android
-                setTimeout(() => {
-                    // Get button position for realistic touch coordinates
-                    const rect = manualButtonElement.getBoundingClientRect();
-                    const x = rect.left + rect.width / 2;
-                    const y = rect.top + rect.height / 2;
+                // For Android: Refresh the page to reset state, then wait for manual action
+                if (isAndroid()) {
+                    console.log('Android detected: Refreshing page before manual redirect');
                     
-                    // Create touch event properties
-                    const touchObj = new Touch({
-                        identifier: Date.now(),
-                        target: manualButtonElement,
-                        clientX: x,
-                        clientY: y,
-                        radiusX: 2.5,
-                        radiusY: 2.5,
-                        rotationAngle: 0,
-                        force: 1
-                    });
+                    // Store a flag to indicate we've completed the timer
+                    sessionStorage.setItem('timerCompleted', 'true');
                     
-                    // Simulate touchstart
-                    const touchStartEvent = new TouchEvent('touchstart', {
-                        bubbles: true,
-                        cancelable: true,
-                        view: window,
-                        touches: [touchObj],
-                        targetTouches: [touchObj],
-                        changedTouches: [touchObj]
-                    });
-                    manualButtonElement.dispatchEvent(touchStartEvent);
-                    
-                    // Simulate touchend after a brief moment
+                    // Refresh the page after a brief delay
                     setTimeout(() => {
-                        const touchEndEvent = new TouchEvent('touchend', {
-                            bubbles: true,
-                            cancelable: true,
-                            view: window,
-                            touches: [],
-                            targetTouches: [],
-                            changedTouches: [touchObj]
-                        });
-                        manualButtonElement.dispatchEvent(touchEndEvent);
-                        
-                        // Follow with click event
-                        const clickEvent = new MouseEvent('click', {
-                            view: window,
-                            bubbles: true,
-                            cancelable: true,
-                            clientX: x,
-                            clientY: y
-                        });
-                        manualButtonElement.dispatchEvent(clickEvent);
-                    }, 50);
-                }, 100);
+                        window.location.reload();
+                    }, 500);
+                } else {
+                    // For iOS and other platforms, try automatic redirect
+                    statusTextElement.textContent = 'Opening app...';
+                    manualButtonElement.textContent = 'Opening...';
+                    
+                    setTimeout(() => {
+                        openApp();
+                    }, 500);
+                }
             }
         }, 1000);
     }
@@ -178,8 +145,29 @@
         // Add click handler to manual button
         manualButtonElement.addEventListener('click', openApp);
         
-        // Start the timer
-        startTimer();
+        // Check if we've already completed the timer (after page refresh on Android)
+        const timerCompleted = sessionStorage.getItem('timerCompleted');
+        
+        if (timerCompleted === 'true') {
+            console.log('Timer already completed - automatically opening app after refresh');
+            
+            // Clear the flag
+            sessionStorage.removeItem('timerCompleted');
+            
+            // Update UI
+            countdownElement.textContent = '0';
+            statusTextElement.textContent = 'Opening app...';
+            manualButtonElement.textContent = 'Opening...';
+            updateProgressCircle(0);
+            
+            // Automatically open the app after refresh
+            setTimeout(() => {
+                openApp();
+            }, 500);
+        } else {
+            // Start the timer normally
+            startTimer();
+        }
         
         // Log page visibility changes (useful for debugging)
         document.addEventListener('visibilitychange', () => {
